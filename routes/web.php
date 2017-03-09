@@ -12,9 +12,7 @@
 */
 use Illuminate\Support\Facades\App;
 
-Route::get('/', function () {
-	
-	echo App::environment();
-	
-    return view('welcome');
-});
+Route::get('/', 'MainController@index');
+
+
+Auth::routes();

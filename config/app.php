@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'Mail-Back-Office',
+    'name' => '사람인 메일 Back-Office',
 
     /*
     |--------------------------------------------------------------------------
@@ -120,7 +120,9 @@ return [
     |
     */
 
-    'log' => env('APP_LOG', 'single'),
+    'log' => env('APP_LOG', 'daily'),
+		
+	'log_max_files' => 60,
 
     'log_level' => env('APP_LOG_LEVEL', 'debug'),
 
@@ -191,7 +193,6 @@ return [
     */
 
     'aliases' => [
-
         'App' => Illuminate\Support\Facades\App::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,

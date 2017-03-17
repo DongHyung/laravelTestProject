@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('app')
 
 @section('content')
 <div class="container">
@@ -11,14 +11,14 @@
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail 주소</label>
+                            <label for="userId" class="col-md-4 control-label">아이디</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                                <input id="userId" type="text" class="form-control" name="userId" value="{{ old('userId') }}" required autofocus>
 
-                                @if ($errors->has('email'))
+                                @if ($errors->has('userId'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('userId') }}</strong>
                                     </span>
                                 @endif
                             </div>

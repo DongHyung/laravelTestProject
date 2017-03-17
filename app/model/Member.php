@@ -2,50 +2,32 @@
 
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Member extends Model 
+class Member extends Authenticatable
 {
+	use Notifiable;
 	
 	/*
 	 * 테이블 명
 	 * */
 	protected $table = 'member';
 	
-	/*
-	 * column user_id
-	 * @var string
-	 * */
-	private $user_id;
+	protected $rememberTokenName = 'rememberToken';
 	
-	/*
-	 * column user_name
-	 * @var string
-	 * */
-	private $user_name;
-	
-	/*
-	 * column password
-	 * @var string
-	 * */
-	private $password;
-	
-	/*
-	 * column role
-	 * @var string
-	 * */
-	private $role;
-	
-	/*
-	 * column scope
+	public $timestamps = false;
+		
+	/**
+	 * The attributes that should be hidden for arrays.
+	 *
 	 * @var array
-	 * */
-	private $scope;
+	 */
+	protected $hidden = [
+			'password', 'rememberToken',
+	];
 	
-	/*
-	 * 등록 날짜, 업데이트 날짜 컬럼 지정
-	 * @var date
-	 * */
-	const CREATE_AT = 'reg_dt';
-	const UPDATE_AT = 'upt_dt';
+	public function isAdministrator() {
+		return $this->getAttribute('role') == 'administrator'; 
+	}
 }

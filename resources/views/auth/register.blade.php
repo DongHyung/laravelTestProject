@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('app')
 
 @section('content')
 <div class="container">
@@ -7,32 +7,50 @@
             <div class="panel panel-default">
                 <div class="panel-heading">회원가입</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
+                    <form id="registerForm" class="form-horizontal" role="form" method="POST" onsubmit="return false;">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">이름</label>
+                        <div class="form-group{{ $errors->has('userName') ? ' has-error' : '' }}">
+                            <label for="userName" class="col-md-4 control-label">이름</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
+                                <input id="userName" type="text" class="form-control" name="userName" value="{{ old('userName') }}" required autofocus>
 
-                                @if ($errors->has('name'))
+                                @if ($errors->has('userName'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('userName') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail 주소</label>
+                        <div class="form-group{{ $errors->has('userId') ? ' has-error' : '' }}">
+                            <label for="userId" class="col-md-4 control-label">아이디</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                <input id="userId" type="text" class="form-control" name="userId" value="{{ old('userId') }}" required>
 
-                                @if ($errors->has('email'))
+                                @if ($errors->has('userId'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong>{{ $errors->first('userId') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+						<div class="form-group{{ $errors->has('role') ? ' has-error' : '' }}">
+                            <label for="role" class="col-md-4 control-label">등급</label>
+
+                            <div class="col-md-6">
+                                <select id="role" class="form-control" name="role" required>
+                                	<option value="administrator">최고 관리자</option>
+                                	<option value="manager">관리자</option>
+                                	<option value="user">사용자</option>
+                                </select>
+
+                                @if ($errors->has('role'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('role') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -62,7 +80,7 @@
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">가입</button>
+                                <button id="registerBtn" type="button" class="btn btn-primary">가입</button>
                             </div>
                         </div>
                     </form>
@@ -71,4 +89,41 @@
         </div>
     </div>
 </div>
+ <script type="text/javascript">
+
+ $(function() {
+	 'use strict';
+
+	 $("#registerBtn").click(function() {
+		 $.ajax({
+				type : "POST",
+				dataType : "JSON",
+				data : {
+					'_token' : $('input[name="_token"]').val(),
+					'userId' : 'test'
+				},
+				url : '/isMember',
+				error : function(data) {
+					console.log(data);
+					alert("시스템 에러 발생");
+				},
+				success : function(rs) {
+					if (rs) {
+						var data = {};
+						var formData = $('#registerForm').serializeArray();
+
+						for (var idx in formData) {
+							data[ formData[ idx ].name ] = formData[ idx ].value;
+						}
+						
+						console.log(data);
+						locationPage(data, "{{ route('register') }}", 'POST');
+					} else {
+						alert('존재하는 계정입니다.');
+					}
+				}
+			});
+	 });
+ });
+</script>
 @endsection

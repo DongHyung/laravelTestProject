@@ -25,7 +25,7 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/main';
 
     /**
      * Create a new controller instance.
@@ -35,5 +35,45 @@ class ResetPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+    
+    public function showResetForm(Request $request, $token = null)
+    {
+    	return view('auth.passwords.reset')->with(
+    			['token' => $token, 'userId' => $request->userId]
+    			);
+    }
+    
+    protected function rules()
+    {
+    	return [
+    			'token' => 'required',
+    			'userId' => 'required|userId',
+    			'password' => 'required|confirmed|min:6',
+    	];
+    }
+    
+    protected function credentials(Request $request)
+    {
+    	return $request->only(
+    			'userId', 'password', 'passwordConfirmation', 'token'
+    			);
+    }
+    
+    protected function resetPassword($user, $password)
+    {
+    	$user->forceFill([
+    			'password' => bcrypt($password),
+    			'rememberToken' => Str::random(60),
+    	])->save();
+    
+    	$this->guard()->login($user);
+    }
+    
+    protected function sendResetFailedResponse(Request $request, $response)
+    {
+    	return redirect()->back()
+    	->withInput($request->only('userId'))
+    	->withErrors([ 'userId' => trans($response) ]);
     }
 }

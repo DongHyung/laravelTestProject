@@ -1,5 +1,7 @@
 <?php
 
+use App\Facades\Campaign;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,9 +12,15 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-use Illuminate\Support\Facades\App;
 
-Route::get('/', 'MainController@index');
+Route::get('/', 'HomeController@index');
+Route::get('/main', 'HomeController@index');
 
-
+/*
+ * 인증 모듈 router
+ * /login
+ * /register
+ * */
 Auth::routes();
+
+Campaign::routes();

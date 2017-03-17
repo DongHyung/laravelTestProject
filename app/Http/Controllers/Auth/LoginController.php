@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Model\Member;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -25,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/main';
 
     /**
      * Create a new controller instance.
@@ -37,13 +39,26 @@ class LoginController extends Controller
         $this->middleware('guest', ['except' => 'logout']);
     }
     
-    public function redirectTo()
+    protected function redirectTo()
     {
-    	return "/";
+    	return '/main';
     }
-    /* 
-    public function showLoginForm()
+    
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
     {
-    	return view('login');
-    } */
+    	return 'userId';
+    }
+    
+    /*
+     * 로그인 성공 시 완료 처리
+     * */
+	public function authenticated(Request $request, $user)
+    {
+        $request->session()->put('member', $user);
+    }
 }

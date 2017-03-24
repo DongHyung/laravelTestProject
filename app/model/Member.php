@@ -13,8 +13,10 @@ class Member extends Authenticatable
 	 * 테이블 명
 	 * */
 	protected $table = 'member';
-	
+		
 	protected $rememberTokenName = 'rememberToken';
+	
+	protected $perPage = 5;
 	
 	public $timestamps = false;
 		

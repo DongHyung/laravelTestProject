@@ -65,42 +65,11 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Model\User::class,
-        ],
-
          'member' => [
              'driver' => 'eloquent',
              'model' => App\Model\Member::class
          ],
     ],
-
-	/*
-	|--------------------------------------------------------------------------
-	| 계정 등급
-	|--------------------------------------------------------------------------
-	| 최고 관리자 - administrator
-	| 관리자 - manager
-	| 사용자 - user
-	*/
-	'roles' => [
-			'administrator' => [
-					'campaign' => [ 'create', 'read', 'update', 'delete', 'approve', 'utmStats' ],
-					'template' => [ 'create', 'read', 'update', 'delete' ],
-					'permission' => [ 'create', 'read', 'update', 'delete' ]
-			],
-			'manager' => [
-					'campaign' => [ 'create', 'read', 'update', 'delete', 'approve', 'utmStats' ],
-					'template' => [ 'create', 'read', 'update', 'delete' ],
-					'permission' => []
-			],
-			'user' => [
-					'campaign' => [ 'create', 'read', 'update', 'delete' ],
-					'template' => [],
-					'permission' => []
-			],
-	],
 		
     /*
     |--------------------------------------------------------------------------
@@ -122,12 +91,33 @@ return [
             'provider' => 'auth',
             'table' => 'member',
             'expire' => 60,
-        ],
-    	'users' => [
-    			'provider' => 'auth',
-    			'table' => 'users',
-    			'expire' => 60,
-    	],
+        ]
     ],
 
+	/*
+	 |--------------------------------------------------------------------------
+	 | 계정 등급
+	 |--------------------------------------------------------------------------
+	 | 최고 관리자 - administrator
+	 | 관리자 - manager
+	 | 사용자 - user
+	 */
+	'roles' => [
+			'administrator' => [
+					'campaign' => [ 'create', 'read', 'update', 'delete', 'approve', 'utmStats' ],
+					'template' => [ 'create', 'read', 'update', 'delete' ],
+					'permission' => [ 'create', 'read', 'update', 'delete' ]
+			],
+			'manager' => [
+					'campaign' => [ 'create', 'read', 'update', 'delete', 'approve', 'utmStats' ],
+					'template' => [ 'create', 'read', 'update', 'delete' ],
+					'permission' => []
+			],
+			'user' => [
+					'campaign' => [ 'create', 'read', 'update', 'delete' ],
+					'template' => [],
+					'permission' => []
+			],
+	],
+	
 ];

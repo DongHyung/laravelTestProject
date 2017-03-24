@@ -7,6 +7,26 @@ use App\Model\Member;
 class TemplatePolicy extends RolePolicy
 {
 	/**
+	 *
+	 * @param  \App\Model\Member  $member
+	 * @return mixed
+	 */
+	public function create(Member $member, $post = null)
+	{
+		return true;
+	}
+	
+	/**
+	 *
+	 * @param  \App\Model\Member  $member
+	 * @return mixed
+	 */
+	public function read(Member $member)
+	{
+		return true;
+	}
+	
+	/**
      * 
      * @param  \App\Model\Member  $member
      * @return mixed

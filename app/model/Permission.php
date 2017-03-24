@@ -5,11 +5,11 @@ namespace App\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 
-class Template extends Model
+class Permission extends Model
 {
 	use Notifiable;
 	
-    protected $table = 'template';
+    protected $table = 'member';
     
     public $timestamps = false;
     

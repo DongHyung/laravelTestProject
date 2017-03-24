@@ -14,10 +14,12 @@ class Campaign extends Facade
 	
 	public static function routes()
 	{
-		Route::get('campaign', 'CampaignController@index');
-		Route::get('campaign/edit/{campaign?}', 'CampaignController@edit');
+		Route::get('campaign', 'CampaignController@index')->name('campaign');
 		
-		Route::post('campaign', 'CampaignController@store')->name('campaign');
-		Route::put('campaign', 'CampaignController@update')->name('campaign');
+		Route::get('campaign/view/{campaign}', 'CampaignController@show')->name('campaign.view');
+		Route::get('campaign/register', 'CampaignController@register')->name('campaign.register');
+		
+		Route::post('campaign', 'CampaignController@store');
+		Route::put('campaign', 'CampaignController@update');
 	}
 }

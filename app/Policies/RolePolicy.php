@@ -59,10 +59,19 @@ class RolePolicy
         return false;
     }
 
-    protected function isPermission($role, $type, $scope) {
-    	$campaignScope = config('auth.roles.{$role}.{$type}');
-    	print_r($campaignScope);
-    	if (in_array($scope, $campaignScope)) {
+    protected function isPermission(Member $member, $type = null, $scope = null) {
+    	
+    	if (empty($type) || empty($scope)) {
+    		return false;
+    	}
+    	
+    	if (!isset($member->scope[ "{$type}" ])) {
+    		return false;
+    	}
+    	
+    	$roleScope = $member->scope[ "{$type}" ];
+    	
+    	if (in_array($scope, $roleScope)) {
     		return true;
     	}
     	 

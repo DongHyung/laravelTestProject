@@ -7,8 +7,10 @@ use Illuminate\Support\Facades\Gate;
 
 use App\Model\Campaign;
 use App\Model\Template;
-use App\Model\Permission;
+use App\Model\Member;
 use App\Policies\CampaignPolicy;
+use App\Policies\TemplatePolicy;
+use App\Policies\PermissionPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,7 +23,7 @@ class AppServiceProvider extends ServiceProvider
 	protected $policies = [
 			Campaign::class => CampaignPolicy::class,
 			Template::class => TemplatePolicy::class,
-			Permission::class => PermissionPolicy::class
+			Member::class => PermissionPolicy::class,
 	];
 	
 	/**

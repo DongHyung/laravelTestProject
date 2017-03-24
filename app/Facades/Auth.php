@@ -18,13 +18,21 @@ class Auth extends Facade
 		Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
         Route::post('login', 'Auth\LoginController@login');
         Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+        
+        Route::post('checkMember', 'Auth\LoginController@checkMember');
 
-        Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-        Route::post('isMember', 'Auth\RegisterController@isMember');
-        Route::post('register', 'Auth\RegisterController@register');
+        Route::get('admin', 'Auth\AuthController@admin')->name('admin');
+        Route::get('admin/view/{member}', 'Auth\AuthController@view')->name('admin.view');
+        Route::post('admin/save', 'Auth\AuthController@save')->name('admin.save');
+        Route::get('admin/register', 'Auth\AuthController@showRegistrationForm')->name('register');
+        Route::post('admin/register', 'Auth\AuthController@register');
+        
+        Route::get('isMember', 'Auth\AuthController@isMember');
+        Route::post('isMember', 'Auth\AuthController@isMember');
 
         Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
         Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
         Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+        
 	}
 }

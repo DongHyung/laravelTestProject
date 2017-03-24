@@ -3,9 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">회원가입</div>
+        <div class="col-md-8 col-md-offset-1">
+            <div class="panel panel-default" style="margin-top:8%;">
+                <div class="panel-heading"><b>계정 생성</b></div>
                 <div class="panel-body">
                     <form id="registerForm" class="form-horizontal" role="form" method="POST" onsubmit="return false;">
                         {{ csrf_field() }}
@@ -43,9 +43,9 @@
 
                             <div class="col-md-6">
                                 <select id="role" class="form-control" name="role" required>
-                                	<option value="administrator">최고 관리자</option>
-                                	<option value="manager">관리자</option>
                                 	<option value="user">사용자</option>
+                                	<option value="manager">관리자</option>
+                                	<option value="administrator">최고 관리자</option>
                                 </select>
 
                                 @if ($errors->has('role'))
@@ -71,16 +71,17 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password-confirm" class="col-md-4 control-label">비밀번호 확인</label>
+                            <label for="password_confirmation" class="col-md-4 control-label">비밀번호 확인</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button id="registerBtn" type="button" class="btn btn-primary">가입</button>
+                                <button id="registerBtn" type="button" class="btn btn_middle btn-primary">계정 생성</button>
+                                <a href="{{ route('admin', $request->getQueryString()) }}" id="updateMember" class="btn btn_middle btn-default">리스트</a>
                             </div>
                         </div>
                     </form>
@@ -95,34 +96,38 @@
 	 'use strict';
 
 	 $("#registerBtn").click(function() {
-		 $.ajax({
-				type : "POST",
-				dataType : "JSON",
-				data : {
-					'_token' : $('input[name="_token"]').val(),
-					'userId' : 'test'
-				},
+		 var data = {};
+		var formData = $('#registerForm').serializeArray();
+
+		for (var idx in formData) {
+			data[ formData[ idx ].name ] = formData[ idx ].value;
+		}
+
+		if (confirm("계정을 생성하시겠습니까?")) {
+			 doAjax({
+				data : data,
 				url : '/isMember',
 				error : function(data) {
 					console.log(data);
 					alert("시스템 에러 발생");
 				},
-				success : function(rs) {
+				callback : function(rs) {
 					if (rs) {
 						var data = {};
 						var formData = $('#registerForm').serializeArray();
-
+	
 						for (var idx in formData) {
 							data[ formData[ idx ].name ] = formData[ idx ].value;
 						}
 						
-						console.log(data);
 						locationPage(data, "{{ route('register') }}", 'POST');
 					} else {
 						alert('존재하는 계정입니다.');
 					}
 				}
 			});
+		}
+		
 	 });
  });
 </script>

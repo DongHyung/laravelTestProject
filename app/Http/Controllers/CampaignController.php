@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\Controller;
 use function GuzzleHttp\json_encode;
+use function GuzzleHttp\json_decode;
 
 class CampaignController extends Controller
 {
@@ -17,7 +18,30 @@ class CampaignController extends Controller
      */
     public function index(Request $request)
     {
-        return view('campaign.main', [ 'campaigns' => Campaign::all() ]);
+    	$params = $request->all();
+    	$data = $this->parameterFiltered($params);
+    	$campaigns = new Campaign();
+    	$campaigns = $campaigns->orderBy('regDate', 'desc');
+    	
+    	foreach ($data as $key => $value) {
+    		if ($key == "title" || $key == "mailSubject" || $key == "sendType") {
+    			$campaigns = $campaigns->where($key, 'like', "%{$value}%");
+    		} else {
+    			$campaigns = $campaigns->where($key, $value);
+    		}
+    	}
+    	
+    	$campaigns = $campaigns->get();
+    	
+    	foreach ($campaigns as $campaign) {
+    		$schedule = json_decode($campaign[ 'schedule' ]);
+    		
+    		foreach ($schedule as $key => $value) {
+    			
+    		}
+    	}
+    	
+        return view('campaign.main', [ 'campaigns' => $campaigns, 'request' => $request ]);
     }
 
     /**
@@ -57,19 +81,19 @@ class CampaignController extends Controller
      */
     public function show(Campaign $campaign)
     {
-        //
+    	$campaign = $campaign->join('template', 'campaign.id', '=', 'template.campaignId')->get();
+    	
+        return view('campaign.view', [ 'campaigns' => $campaign ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Model\Campaign  $campaign
      * @return \Illuminate\Http\Response
      */
-    public function edit(Campaign $campaign)
+    public function register()
     {
-    	$pass = app('hash')->make('123');
-    	return view('campaign.edit', [ 'campaign' => $campaign, 'hash' => app('hash')->make('123'), 'pass' => app('hash')->check('123', $pass) ]);
+    	return view('campaign.register');
     }
 
     /**
